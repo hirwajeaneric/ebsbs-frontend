@@ -16,15 +16,10 @@ import { BloodInTransactionsReportToPrint } from "./BloodInTransactionsReportToP
 export default function HospitalLabTechOverviewContent() {
   // Report configurations 
   const bloodInTransactionReportRef = useRef(null);
-  // const stockReportRef = useRef(null);
 
   const handlePrintBloodInTransactionsReport = useReactToPrint({
     content: () => bloodInTransactionReportRef.current,
   });
-  
-  // const handlePrintStockReport = useReactToPrint({
-  //   content: () => stockReportRef.current,
-  // });
 
   const [isLoading, setIsLoading] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -53,7 +48,6 @@ export default function HospitalLabTechOverviewContent() {
       year: Number(filterYear)
     })
       .then((response) => {
-        // console.log(response);
         setNotifications(response.hospital.notifications);
         setBloodRequests(response.sentBloodRequests);
         setReceivedBloodRequests(response.receivedBloodRequests)

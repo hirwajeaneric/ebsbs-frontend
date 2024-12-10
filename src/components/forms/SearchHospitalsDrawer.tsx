@@ -30,7 +30,7 @@ export type ResultTypes = {
     resultType?: "Public" | "Private",
     email?: string,
     phone?: string,
-    POBox?: string, 
+    POBox?: string,
 }
 
 export type SearchHospitalsTypes = z.infer<typeof FormSchema>;
@@ -232,6 +232,16 @@ export default function SearchHospitalsDrawer() {
                         {(results && results.length !== 0) && <Separator />}
                         {(results && results.length > 0) && <p className="font-bold">Search Results</p>}
                         {results.length !== 0 && <div className="flex bg-secondary flex-col w-full gap-2 border p-2 rounded-md">
+                            <div className="flex w-full justify-between ">
+                                <p>
+                                    <span className="text-sm font-bold">Entity</span>
+                                </p>
+                                <p>
+                                    <span className="text-sm font-bold">Blood Bags</span>
+                                </p>
+                                <span></span>
+                            </div>
+                            <Separator />
                             {results.map((result) => {
                                 if (!result || !result.name) return null;
                                 if (result.id === resultId) return null;
