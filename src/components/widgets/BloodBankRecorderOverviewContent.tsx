@@ -58,8 +58,8 @@ export default function BloodBankRecorderOverviewContent() {
         setPendingRequests(response.requests.filter((request: RequestTypes) => request.status === "Pending"));
         setBloodBags(response.bloodBags);
         setNotifications(response.notifications);
-        setFilterYear(response.filters.year);
-        setFilterMonth(response.filters.month);
+        setFilterYear(response.filters.year.toString());
+        setFilterMonth(response.filters.month.toString());
         setBloodBank(response.bloodBank || {
           id: '',
           name: '',

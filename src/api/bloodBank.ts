@@ -96,13 +96,7 @@ type FilterTypes = {
 }
 
 export const getBloodBankRecorderOverviewData = async ({ bloodBankId, month, year }: FilterTypes) => {
-    let endPoint = "";
-    if (month && year) {
-        endPoint = `${API_BASE_URL}/bloodbanks/recorderOverviewData?id=${bloodBankId}&month=${month}&year=${year}`;
-    } else if (!month && !year) {
-        endPoint = `${API_BASE_URL}/bloodbanks/recorderOverviewData?id=${bloodBankId}`;
-    }
-    const response = await fetch(endPoint);
+    const response = await fetch(`${API_BASE_URL}/bloodbanks/recorderOverviewData?id=${bloodBankId}&month=${month}&year=${year}`);
     const responseData = await response.json();
     if (!response.ok) {
         if (responseData.errors) {
