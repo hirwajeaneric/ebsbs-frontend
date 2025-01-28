@@ -9,9 +9,11 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import LoadingButton from "../widgets/LoadingButton"
 import { toast } from "sonner"
-import { addBloodBag, updateBloodBag } from "@/api/bloodBag"
+import { addBloodBag, deleteBloodBag, updateBloodBag } from "@/api/bloodBag"
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
 import { Separator } from "../ui/separator"
+import { cn } from "@/lib/utils"
+import { Loader2 } from "lucide-react"
 
 const FormSchema = z.object({
   id: z.string().optional(),
@@ -33,6 +35,7 @@ export type BloodBagTypes = z.infer<typeof FormSchema>;
 
 export default function ManageBloodBagForm({ bag }: { bag?: BloodBagTypes }) {
   const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const bloodBankId = JSON.parse(localStorage.getItem("bloodbankRecorder") as string).bloodBankId;
   const navigate = useNavigate();
 
@@ -43,7 +46,7 @@ export default function ManageBloodBagForm({ bag }: { bag?: BloodBagTypes }) {
       bloodBankId: bloodBankId,
       amountInLitres: bag?.amountInLitres || 0.35,
       bloodGroup: bag?.bloodGroup || undefined,
-      bloodQuality: bag?.bloodQuality || undefined,
+      bloodQuality: bag?.bloodQuality || "Good",
       bloodType: bag?.bloodType || undefined,
       rhesis: bag?.rhesis || undefined,
     },
@@ -77,6 +80,21 @@ export default function ManageBloodBagForm({ bag }: { bag?: BloodBagTypes }) {
           console.log(error);
         })
     }
+  }
+
+  function onDelete() {
+    setIsDeleting(true);
+    deleteBloodBag(bag?.id as string)
+      .then((response) => {
+        toast.success(response.message);
+        setIsDeleting(false);
+        navigate(`/dashboard/r/bags`)
+      })
+      .catch((error) => {
+        setIsDeleting(false);
+        toast.error(error.message);
+        console.log(error);
+      })
   }
 
   return (
@@ -147,7 +165,7 @@ export default function ManageBloodBagForm({ bag }: { bag?: BloodBagTypes }) {
             )}
           />
         </div>
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:space-y-0 items-start justify-between">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 md:space-y-0 items-start justify-between">
           <FormField
             control={form.control}
             name="bloodGroup"
@@ -232,7 +250,7 @@ export default function ManageBloodBagForm({ bag }: { bag?: BloodBagTypes }) {
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="bloodQuality"
             render={({ field }) => (
@@ -273,13 +291,24 @@ export default function ManageBloodBagForm({ bag }: { bag?: BloodBagTypes }) {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
         </div>
         <Separator />
         <div className="flex mt-8 justify-between items-center w-full">
           {isLoading
             ? <LoadingButton label="Submitting..." btnClass={"w-fit"} btnVariant={"default"} />
             : <Button type="submit">{bag?.id ? "Confirm changes" : "Submit"}</Button>
+          }
+          {isDeleting
+            ? 
+            <Button type="button" variant={"secondary"} className={cn("w-fit", "flex justify-center items-center gap-4")} disabled>
+              <Loader2 size={20} className={"my-10 animate-spin"} />
+              <span>
+                Deleting...
+              </span>
+            </Button>
+            : 
+            <Button type="button" onClick={onDelete} variant={"secondary"}>{bag?.id && "Delete"}</Button>
           }
         </div>
       </form>

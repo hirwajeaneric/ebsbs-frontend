@@ -1,5 +1,6 @@
 import {
     CircleUser,
+    File,
     LineChart,
     MailCheck,
     MailPlus,
@@ -16,6 +17,14 @@ const HospitalDashboardLinks = [
         to: 'overview',
         user: "Worker",
         icon: <LineChart className="h-4 w-4" />,
+    },
+    {
+        hospitalId: "",
+        label: "Report",
+        destination: '',
+        to: 'report',
+        user: "Worker",
+        icon: <File className="h-4 w-4" />,
     },
     {
         hospitalId: "",

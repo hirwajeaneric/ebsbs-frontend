@@ -1,16 +1,36 @@
-import { forwardRef } from 'react';
-import { getMonthName } from '@/lib/months';
+import { forwardRef, useEffect } from 'react';
 import { BloodInTransactionsTypes } from '../tables/BloodInTransactionsTable/BloodInTransactionTable';
 import { HospitalDataTypes } from '../forms/HospitalSettingsForm';
 
 type Props = {
     bloodInTransactions: BloodInTransactionsTypes[] | undefined,
     hospital: HospitalDataTypes | undefined,
-    filterYear: number,
-    filterMonth: number
+    from: string,
+    to: string
 }
 
-export const BloodInTransactionsReportToPrint = forwardRef<HTMLDivElement, Props>(({ bloodInTransactions, hospital, filterYear, filterMonth }, ref) => {
+export const BloodInTransactionsReportToPrintRangeChooser = forwardRef<HTMLDivElement, Props>(({ bloodInTransactions, hospital, from, to }, ref) => {
+
+    useEffect(() => {
+        bloodInTransactions?.forEach((transaction: BloodInTransactionsTypes) => {
+            let plasmas = 0;
+            let platelets = 0;
+            let redBloodCells = 0;
+            let wholeBlood = 0;
+
+            plasmas += transaction.plasmaRhN_A + transaction.plasmaRhN_B + transaction.plasmaRhN_O + transaction.plasmaRhP_A + transaction.plasmaRhP_B + transaction.plasmaRhP_O + transaction.plasmaRhP_AB + transaction.plasmaRhN_AB;
+            platelets += transaction.plateletRhN_A + transaction.plateletRhN_B + transaction.plateletRhN_O + transaction.plateletRhP_A + transaction.plateletRhP_B + transaction.plateletRhP_O + transaction.plateletRhP_AB + transaction.plateletRhN_AB;
+            redBloodCells += transaction.rbcN_A + transaction.rbcN_B + transaction.rbcN_O + transaction.rbcN_AB + transaction.rbcP_A + transaction.rbcP_B + transaction.rbcP_O + transaction.rbcP_AB;
+            wholeBlood += transaction.rhN_A + transaction.rhN_B + transaction.rhN_O + transaction.rhP_A + transaction.rhP_B + transaction.rhP_O + transaction.rhP_AB + transaction.rhN_AB;
+
+            transaction.totalPlasmas = plasmas;
+            transaction.totalPlatelets = platelets;
+            transaction.totalRedBloodCells = redBloodCells;
+            transaction.totalWholeBlood = wholeBlood;
+            transaction.totalBags = plasmas + platelets + redBloodCells + wholeBlood;
+        });
+        console.log(bloodInTransactions);
+    }, [bloodInTransactions]);
 
     if (!bloodInTransactions || !hospital) return null;
 
@@ -23,7 +43,7 @@ export const BloodInTransactionsReportToPrint = forwardRef<HTMLDivElement, Props
                         <img src="/vecteezy_round-medical-cross-symbol-on-transparent-background_17177954.png" className='w-[100px]' alt="C.P.T.S Logo" />
                         <h1 className='font-bold text-3xl'>Blood In Transactions</h1>
                         <h2 className='text-xl font-bold text-slate-400'>
-                            {filterYear} - {getMonthName(filterMonth + 1)}
+                        From {from.split("").slice(0, 16).join("")} to {to.split("").slice(0, 16).join("")}
                         </h2>
                     </div>
                     <div className=''>

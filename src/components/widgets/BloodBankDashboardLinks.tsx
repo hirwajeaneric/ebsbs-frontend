@@ -7,7 +7,8 @@ import {
     Settings,
     ShoppingCart,
     Users,
-    Hospital
+    Hospital,
+    File
 } from "lucide-react"
 
 const BloodBankDashboardLinks = [
@@ -16,6 +17,12 @@ const BloodBankDashboardLinks = [
         to: "/dashboard/r",
         user: "Recorder",
         icon: <LineChart className="h-4 w-4" />,
+    },
+    {
+        label: "Report",
+        to: "/dashboard/r/reports",
+        user: "Recorder",
+        icon: <File className="h-4 w-4" />,
     },
     {
         label: "Overview",
