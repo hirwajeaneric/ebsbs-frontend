@@ -206,6 +206,7 @@ type labTechnitianRequestTypes = {
 }
 
 export const getLabTechnitianOverviewData = async ({ hospitalId, month, year }: labTechnitianRequestTypes) => {
+    // console.log(hospitalId, month, year);
     const response = await fetch(`${API_BASE_URL}/hospitals/labtech-overview?id=${hospitalId}&month=${month}&year=${year}`);
     const responseData = await response.json();
     if (!response.ok) {
@@ -220,4 +221,21 @@ export const getLabTechnitianOverviewData = async ({ hospitalId, month, year }: 
         }
     }
     return responseData; 
+}
+
+export const getHospitalRequestsData = async (hospitalId: string, from: string | undefined, to: string | undefined) => {
+    const response = await fetch(`${API_BASE_URL}/hospitals/pharmacistReportData?id=${hospitalId}&from=${from}&to=${to}`);
+    const responseData = await response.json();
+    if (!response.ok) {
+        if (responseData.errors) {
+            throw new Error(responseData.errors);
+        }
+        if (responseData.message) {
+            throw new Error(responseData.message);
+        }
+        if (responseData.error) {
+            throw new Error(responseData.error);
+        }
+    }
+    return responseData;
 }

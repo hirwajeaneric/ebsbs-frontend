@@ -31,6 +31,7 @@ import BloodBankOverview from "./pages/bloodbank/dashboard/Overview";
 import BloodBankUsers from "./pages/bloodbank/dashboard/users/Users";
 import BloodBankAddUser from "./pages/bloodbank/dashboard/users/AddUser";
 import BloodBankUpdateUser from "./pages/bloodbank/dashboard/users/UpdateUser";
+import BloodBankReports from "./pages/bloodbank/dashboard/reports/Reports";
 
 import HospitalUsers from "./pages/hospital/dashboard/users/Users";
 
@@ -59,6 +60,7 @@ import BloodBankRequestsDetails from "./pages/bloodbank/dashboard/requests/Reque
 import LandingPage from "./pages/LandingPage";
 import Hospitals from "./pages/bloodbank/dashboard/hospital/Hospitals";
 import HospitalDetails from "./pages/bloodbank/dashboard/hospital/HospitalDetails";
+import HospitalReport from "./pages/hospital/dashboard/reports/Reports";
 
 type User = {
   firstName: string;
@@ -125,6 +127,7 @@ export default function App() {
           >
             <Route path="" element={<HospitalOverview />} />
             <Route path="overview" element={<HospitalOverview />} />
+            <Route path="report" element={<HospitalReport />} />
             <Route path="profile" element={<HospitalProfile />} />
             <Route path="settings" element={<HospitalSettings />} />
             <Route path="users" element={<HospitalUsers />} />
@@ -156,6 +159,7 @@ export default function App() {
             <Route path="users/new" element={<BloodBankAddUser />} />
             <Route path="users/:userId" element={<BloodBankUpdateUser />} />
             <Route path="stock" element={<BloodBankStock />} />
+            <Route path="reports" element={<BloodBankReports />} />
             <Route path="bags" element={<BloodBags />} />
             <Route path="hospitals" element={<Hospitals />} />
             <Route path="hospitals/:hospitalId" element={<HospitalDetails />} />
